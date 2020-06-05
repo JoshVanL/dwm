@@ -20,10 +20,16 @@ static const char col_gray2[]       = "#444444"; // TODO: make transparent
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_gray5[]       = "#000000";
+static const char col_black[]       = "#000000";
+static const char col_red[]         = "#ff0000";
+static const char col_yellow[]      = "#ffff00";
+static const char col_white[]       = "#ffffff";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray4, col_gray1, col_gray5 },
+	[SchemeWarn] =	 { col_black, col_yellow, col_red },
+	[SchemeUrgent]=	 { col_white, col_red,    col_red },
 };
 
 /* tagging */
@@ -69,11 +75,25 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_gray1, "-sf", col_gray4, "-l", "5", NULL };
-static const char *termcmd[]  = { "termite", NULL };
+static const char *termcmd[]      = { "termite", NULL };
 static const char *chromiumcmd[]  = { "chromium", "--force-device-scale-factor=1.75", "--force-dark-mode", NULL };
+
 static const char *roficmd[]  = { "rofi", "-font", "Roboto 26", "-show", "run", NULL };
 static const char *lockcmd[]  = { "/home/josh/scripts/lock.sh", "/home/josh/img/wallpapers/3-lock.png", NULL };
+
+static const char *togglebluetoothcmd[]  = { "/home/josh/scripts/toggle-bluetooth.sh",  NULL };
+static const char *connectE18cmd[]       = { "bluetoothctl", "connect", "9A:BC:04:01:DD:DA",  NULL };
+
+static const char *backlightUpCmd[]   = { "light", "-A", "5",  NULL };
+static const char *backlightDownCmd[] = { "light", "-U", "5",  NULL };
+static const char *volumeUpCmd[]      = { "/home/josh/scripts/volume.sh", "5", "+",  NULL };
+static const char *volumeDownCmd[]    = { "/home/josh/scripts/volume.sh", "5", "-",  NULL };
+static const char *volumeMuteCmd[]    = { "/home/josh/scripts/mute.sh",  NULL };
+static const char *micMuteCmd[]       = { "amixer", "set", "Capture", "toggle", NULL};
+
+// TODO: Change gaps
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -93,6 +113,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} }, // set to grid
 	{ MODKEY,                       XK_f,      togglemonocle,  {.v = &layouts[1]} }, // toggle monocle
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|Mod1Mask,              XK_0,      togglegaps, {0} },
 	{ MODKEY|ShiftMask,             XK_l,      zoom,           {0} },
 	{ MODKEY|ShiftMask,             XK_h,      zoom,           {0} },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
@@ -115,6 +136,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,      spawn,          {.v = chromiumcmd } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = roficmd } },
 	{ MODKEY|ShiftMask,             XK_Delete, spawn,          {.v = lockcmd } },
+	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = togglebluetoothcmd } },
+	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = connectE18cmd } },
+
+	{ False,                        XF86XK_MonBrightnessDown,  spawn,    {.v = backlightDownCmd } },
+	{ False,                        XF86XK_MonBrightnessUp,    spawn,    {.v = backlightUpCmd } },
+	{ False,                        XF86XK_AudioRaiseVolume,   spawn,    {.v = volumeUpCmd } },
+	{ False,                        XF86XK_AudioLowerVolume,   spawn,    {.v = volumeDownCmd } },
+	{ False,                        XF86XK_AudioMute,          spawn,    {.v = volumeMuteCmd } },
+	{ False,                        XF86XK_Launch3,            spawn,    {.v = micMuteCmd } },
 };
 
 /* button definitions */

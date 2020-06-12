@@ -13,8 +13,7 @@ static const int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int rmaster            = 1;        /* 1 means master-area is initially on the right */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-//static const char *fonts[]          = { "FontAwesome, Arial:size=33" };
-static const char *fonts[]          = { "FontAwesome, Arial:size=29" };
+static const char *fonts[]          = { "FontAwesome, Arial:size=33" };
 static const char dmenufont[]       = "FontAwesome, Menlo for Powerline:size=33";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444"; // TODO: make transparent
@@ -22,15 +21,18 @@ static const char col_gray3[]       = "#888888";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_gray5[]       = "#000000";
 //static const char col_gray6[]       = "#bbbbbb";
-static const char col_gray6[]       = "#999999";
+static const char col_gray6[]       = "#eeeeee";
+//static const char col_gray6[]       = "#999999";
 static const char col_black[]       = "#000000";
 static const char col_red[]         = "#ff0000";
 static const char col_yellow[]      = "#ffff00";
 static const char col_white[]       = "#ffffff";
+static const char col_purple[]      = "#dda0dd";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray6, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_gray1, col_gray5 },
+	//[SchemeSel]  = { col_gray4, col_gray1, col_gray5 },
+	[SchemeSel]  = { col_purple, col_gray1, col_gray5 },
 	[SchemeWarn] =	 { col_black, col_yellow, col_red },
 	[SchemeUrgent]=	 { col_white, col_red,    col_red },
 };

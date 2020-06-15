@@ -5,6 +5,7 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
@@ -32,7 +33,8 @@ static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray6, col_gray1, col_gray2 },
 	//[SchemeSel]  = { col_gray4, col_gray1, col_gray5 },
-	[SchemeSel]  = { col_purple, col_gray1, col_gray5 },
+	//[SchemeSel]  = { col_purple, col_gray1, col_gray5 },
+	[SchemeSel]  = { col_purple, col_gray1, col_white },
 	[SchemeWarn] =	 { col_black, col_yellow, col_red },
 	[SchemeUrgent]=	 { col_white, col_red,    col_red },
 };
@@ -46,9 +48,9 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      instance    title       tags mask     isfloating isterminal  noswallow    monitor */
+	{ "Gimp",     NULL,       NULL,       0,            1,         0,          -1,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,         0,          -1,           -1 },
 };
 
 /* layout(s) */
@@ -87,6 +89,7 @@ static const char *chromiumcmd[]  = { "chromium", "--force-device-scale-factor=1
 
 static const char *roficmd[]  = { "rofi", "-font", "Roboto 26", "-show", "run", NULL };
 static const char *lockcmd[]  = { "/home/josh/scripts/lock.sh", "/home/josh/img/wallpapers/3-lock.png", NULL };
+static const char *poweroffcmd[]  = { "sudo", "poweroff", NULL };
 
 static const char *togglebluetoothcmd[]  = { "/home/josh/scripts/toggle-bluetooth.sh",  NULL };
 static const char *connectE18cmd[]       = { "bluetoothctl", "connect", "9A:BC:04:01:DD:DA",  NULL };
@@ -97,6 +100,8 @@ static const char *volumeUpCmd[]      = { "/home/josh/scripts/volume.sh", "5", "
 static const char *volumeDownCmd[]    = { "/home/josh/scripts/volume.sh", "5", "-",  NULL };
 static const char *volumeMuteCmd[]    = { "/home/josh/scripts/mute.sh",  NULL };
 static const char *micMuteCmd[]       = { "amixer", "set", "Capture", "toggle", NULL};
+
+static const char *monitorcmd[]    = { "/home/josh/scripts/monitor.sh", NULL};
 
 // TODO: Change gaps
 
@@ -134,15 +139,17 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	TAGKEYS(                        XK_0,                      9)
+  TAGKEYS(                        XK_0,                      9)
 	{ MODKEY,                       XK_q,      quit,           {0} },
 
   // command keys
 	{ MODKEY|ShiftMask,             XK_c,      spawn,          {.v = chromiumcmd } },
 	{ MODKEY,                       XK_d,      spawn,          {.v = roficmd } },
-	{ MODKEY|ShiftMask,             XK_Delete, spawn,          {.v = lockcmd } },
+  { MODKEY|ShiftMask,             XK_Delete, spawn,          {.v = lockcmd } },
+	{ MODKEY|ShiftMask|ControlMask, XK_Delete, spawn,          {.v = poweroffcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = togglebluetoothcmd } },
 	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = connectE18cmd } },
+	{ MODKEY|ShiftMask,             XK_equal,  spawn,          {.v = monitorcmd } },
 
 	{ False,                        XF86XK_MonBrightnessDown,  spawn,    {.v = backlightDownCmd } },
 	{ False,                        XF86XK_MonBrightnessUp,    spawn,    {.v = backlightUpCmd } },

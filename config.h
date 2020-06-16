@@ -5,7 +5,7 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
@@ -49,8 +49,9 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating isterminal  noswallow    monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,         0,          -1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,         0,          -1,           -1 },
+	{ "Gimp",     NULL,       NULL,       0,            1,         0,           0,           -1 },
+	{ "Termite",  NULL,       NULL,       0,            0,         1,           0,        -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,         0,           0,           -1 },
 };
 
 /* layout(s) */
@@ -102,6 +103,7 @@ static const char *volumeMuteCmd[]    = { "/home/josh/scripts/mute.sh",  NULL };
 static const char *micMuteCmd[]       = { "amixer", "set", "Capture", "toggle", NULL};
 
 static const char *monitorcmd[]    = { "/home/josh/scripts/monitor.sh", NULL};
+static const char *monitoroffcmd[]    = { "/home/josh/scripts/monitor-off.sh", NULL};
 
 // TODO: Change gaps
 
@@ -150,6 +152,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = togglebluetoothcmd } },
 	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = connectE18cmd } },
 	{ MODKEY|ShiftMask,             XK_equal,  spawn,          {.v = monitorcmd } },
+	{ MODKEY|ShiftMask,             XK_minus,  spawn,          {.v = monitoroffcmd } },
 
 	{ False,                        XF86XK_MonBrightnessDown,  spawn,    {.v = backlightDownCmd } },
 	{ False,                        XF86XK_MonBrightnessUp,    spawn,    {.v = backlightUpCmd } },

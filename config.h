@@ -29,14 +29,20 @@ static const char col_red[]         = "#ff0000";
 static const char col_yellow[]      = "#ffff00";
 static const char col_white[]       = "#ffffff";
 static const char col_purple[]      = "#dda0dd";
+static const char col_beige[]       = "#eae6dd";
+static const char col_macgray[]     = "#E8E9EB";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray6, col_gray1, col_gray2 },
+	//[SchemeNorm]   = { col_black, col_macgray, col_gray2 },
 	//[SchemeSel]  = { col_gray4, col_gray1, col_gray5 },
 	//[SchemeSel]  = { col_purple, col_gray1, col_gray5 },
-	[SchemeSel]  = { col_purple, col_gray1, col_white },
-	[SchemeWarn] =	 { col_black, col_yellow, col_red },
-	[SchemeUrgent]=	 { col_white, col_red,    col_red },
+	//[SchemeSel]    = { col_purple, col_macgray, col_gray2},
+	//[SchemeWarn]   =	 { col_black, col_yellow, col_red },
+	//[SchemeUrgent] =	 { col_white, col_red,    col_red },
+  [SchemeSel]  = { col_purple, col_gray1, col_white },
+  [SchemeWarn] =   { col_black, col_yellow, col_red },
+  [SchemeUrgent]=  { col_white, col_red,    col_red },
 };
 
 /* tagging */
@@ -48,10 +54,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating isterminal  noswallow    monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,         0,           0,           -1 },
-	{ "Termite",  NULL,       NULL,       0,            0,         1,           0,        -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,         0,           0,           -1 },
+	/* class      instance    title           tags mask     isfloating isterminal  noswallow  monitor */
+	{ "Gimp",     NULL,       NULL,           0,            1,         0,           0,        -1 },
+	{ "Termite",  NULL,       NULL,           0,            0,         1,           0,        -1 },
+	{ NULL,       NULL,       "Event Tester", 0,            0,         1,           1,        -1 },
+	{ "Firefox",  NULL,       NULL,           1 << 8,       0,         0,           0,        -1 },
 };
 
 /* layout(s) */
@@ -63,7 +70,7 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "=[]",      tile },
-	{ "[M]",      monocle },
+	{ "[0]",      monocle },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[G]",      grid },    /* first entry is default */
 };
@@ -86,7 +93,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray6, "-sb", col_gray1, "-sf", col_gray4, "-l", "5", NULL };
 static const char *termcmd[]      = { "termite", NULL };
-static const char *chromiumcmd[]  = { "chromium", "--force-device-scale-factor=1.75", "--force-dark-mode", NULL };
+//static const char *chromiumcmd[]  = { "chromium", "--force-device-scale-factor=1.75", "--force-dark-mode", NULL };
+static const char *chromiumcmd[]  = { "chromium", "--force-device-scale-factor=1.75", NULL };
 
 static const char *roficmd[]  = { "rofi", "-font", "Roboto 26", "-show", "run", NULL };
 static const char *lockcmd[]  = { "/home/josh/scripts/lock.sh", "/home/josh/img/wallpapers/3-lock.png", NULL };
@@ -104,6 +112,7 @@ static const char *micMuteCmd[]       = { "amixer", "set", "Capture", "toggle", 
 
 static const char *monitorcmd[]    = { "/home/josh/scripts/monitor.sh", NULL};
 static const char *monitoroffcmd[]    = { "/home/josh/scripts/monitor-off.sh", NULL};
+static const char *keyboardCmd[]    = { "/home/josh/scripts/keyboard.sh",  NULL };
 
 // TODO: Change gaps
 
@@ -153,6 +162,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = connectE18cmd } },
 	{ MODKEY|ShiftMask,             XK_equal,  spawn,          {.v = monitorcmd } },
 	{ MODKEY|ShiftMask,             XK_minus,  spawn,          {.v = monitoroffcmd } },
+	{ MODKEY|ShiftMask,             XK_k,      spawn,          {.v = keyboardCmd } },
 
 	{ False,                        XF86XK_MonBrightnessDown,  spawn,    {.v = backlightDownCmd } },
 	{ False,                        XF86XK_MonBrightnessUp,    spawn,    {.v = backlightUpCmd } },
@@ -160,6 +170,7 @@ static Key keys[] = {
 	{ False,                        XF86XK_AudioLowerVolume,   spawn,    {.v = volumeDownCmd } },
 	{ False,                        XF86XK_AudioMute,          spawn,    {.v = volumeMuteCmd } },
 	{ False,                        XF86XK_Launch3,            spawn,    {.v = micMuteCmd } },
+	{ MODKEY,                       XK_a,                      spawn,    {.v = micMuteCmd } },
 };
 
 /* button definitions */

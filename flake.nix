@@ -9,9 +9,14 @@
       targetSystems = [ "x86_64-linux" "aarch64-linux" ];
     in flake-utils.lib.eachSystem targetSystems (system: let
       patches = with nixpkgs.legacyPackages.${system}; [
-        #(fetchpatch {
-        #  name = "gaps";
-        #})
+        ./patches/gaps.patch
+        (fetchpatch {
+          name = "fullscreen";
+          url = "https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.2.diff?raw=true";
+          hash = "sha256-E6MNyhap5ceENYwIzp3bVYBrpDbVH9NMEteUDIOEGe4=";
+        })
+        ./patches/rotatestack.patch
+        ./patches/config.patch
       ];
       dwmOverlay = final: prev: {
         dwm = prev.dwm.overrideAttrs (_: {
@@ -23,9 +28,11 @@
         inherit system;
         overlays = [ dwmOverlay ];
       };
-    in {
-      packages = {
-        default = pkgs.dwm;
+    in rec {
+      packages.default = pkgs.dwm;
+      checks = packages;
+      overlays = final: prev: {
+        dwm = pkgs.dwm;
       };
     });
 }

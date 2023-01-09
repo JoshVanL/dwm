@@ -1,11 +1,13 @@
 diff --git a/config.def.h b/config.def.h
-index 9efa774..efc82b0 100644
+index 9efa774..ad265b9 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -2,6 +2,7 @@
+@@ -1,7 +1,8 @@
+ /* See LICENSE file for copyright and license details. */
  
  /* appearance */
- static const unsigned int borderpx  = 1;        /* border pixel of windows */
+-static const unsigned int borderpx  = 1;        /* border pixel of windows */
++static const unsigned int borderpx  = 4;        /* border pixel of windows */
 +static const unsigned int gappx     = 20;        /* gaps between windows */
  static const unsigned int snap      = 32;       /* snap pixel */
  static const int showbar            = 1;        /* 0 means no bar */

@@ -15,6 +15,7 @@
           url = "https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.2.diff?raw=true";
           hash = "sha256-E6MNyhap5ceENYwIzp3bVYBrpDbVH9NMEteUDIOEGe4=";
         })
+        ./patches/master-right.patch
         ./patches/rotatestack.patch
         ./patches/config.patch
       ];

@@ -23,7 +23,7 @@ index 9efa774..b62e842 100644
  	/*               fg         bg         border   */
  	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 -	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
-+  [SchemeSel]  = { col_gray4, col_gray2,  col_gray1  },
++  [SchemeSel]  = { col_gray4, col_gray2,  col_gray3  },
  };
  
  /* tagging */

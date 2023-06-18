@@ -7,33 +7,34 @@
   outputs = { self, nixpkgs, flake-utils }:
     let
       targetSystems = [ "x86_64-linux" "aarch64-linux" ];
-    in flake-utils.lib.eachSystem targetSystems (system: let
-      patches = with nixpkgs.legacyPackages.${system}; [
+      patches = [
         ./patches/gaps.patch
-        (fetchpatch {
-          name = "fullscreen";
-          url = "https://github.com/bakkeby/patches/blob/master/dwm/dwm-togglelayout-6.2.diff?raw=true";
-          hash = "sha256-E6MNyhap5ceENYwIzp3bVYBrpDbVH9NMEteUDIOEGe4=";
-        })
+        ./patches/toggle-layout.patch
         ./patches/master-right.patch
         ./patches/rotatestack.patch
         ./patches/config.patch
       ];
       dwmOverlay = final: prev: {
-        dwm = prev.dwm.overrideAttrs (_: {
+        dwm-joshvanl = prev.dwm.overrideAttrs (_: {
           src = ./.;
           patches = patches;
         });
       };
+
+    in flake-utils.lib.eachSystem targetSystems (system: let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ dwmOverlay ];
       };
     in rec {
-      packages.default = pkgs.dwm;
+      packages.default = pkgs.dwm-joshvanl;
       checks = packages;
-      overlays = final: prev: {
-        dwm = pkgs.dwm;
+    }) // rec {
+      overlays.default = final: prev: {
+        dwm = final.dwm-joshvanl;
       };
-    });
+      nixosModules.default = {
+        nixpkgs.overlays = [ dwmOverlay overlays.default ];
+      };
+    };
 }
